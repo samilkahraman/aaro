@@ -1,4 +1,21 @@
 {
   "name": "aaro",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "description": "Aaro api client",
+  "license": "MIT",
+  "main": "index.js",
+  "keywords": [
+    "aaro",
+    "erp",
+    "npm",
+    "package"
+  ],
+  "dependencies": {
+    "axios": "^0.21.1",
+    "qs": "^6.10.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samilkahraman/aaro.git"
+  }
 }
