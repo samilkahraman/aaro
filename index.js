@@ -1,6 +1,8 @@
 const axios = require("axios");
 const qs = require("qs");
 
+const productService = require("./product/productService");
+
 const token = (baseUrl, username, password) =>
   axios.post(
     `${baseUrl}/Token`,
@@ -17,3 +19,4 @@ const token = (baseUrl, username, password) =>
   );
 
 module.exports = token;
+module.exports = productService;
