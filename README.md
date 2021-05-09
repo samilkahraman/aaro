@@ -26,7 +26,7 @@ Check out the Aaro API endpoints and data that can be manipulated in <https://aa
 ### CJS example:
 
 ```js
-const Aaro = require('./index');
+const Aaro = require('aaro');
 
 const aaro = new Aaro({
     baseUrl: 'https://erp.aaro.com.tr',
@@ -92,7 +92,7 @@ const aaro = new Aaro({
 ## Example of use
 
 ```js
-const Aaro = require('./index');
+const Aaro = require('aaro');
 
 const aaro = new Aaro({
     baseUrl: 'https://erp2.aaro.com.tr',
@@ -108,4 +108,4 @@ aaro.get('Stok', {
 
 ## Changelog
 
-[See changelog for details](https://github.com/samilkahraman/aaro/blob/master/CHANGELOG.md)
+[See changelog for details](https://github.com/samilkahraman/aaro/blob/main/Changelog.md)
