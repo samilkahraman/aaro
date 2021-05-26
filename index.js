@@ -1,5 +1,6 @@
 const axios = require('axios');
 const Url = require('url-parse');
+const Token = require('./token');
 
 /**
  * Creates a Aaro instance.
@@ -205,4 +206,4 @@ Aaro.prototype._parseParamsObject = function _parseParamsObject(params, query) {
     return query;
 };
 
-module.exports = Aaro;
+module.exports = { Aaro, Token };

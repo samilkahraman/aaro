@@ -26,12 +26,25 @@ Check out the Aaro API endpoints and data that can be manipulated in <https://aa
 ### CJS example:
 
 ```js
-const Aaro = require('aaro');
+const { Aaro, Token } = require('aaro');
 
-const aaro = new Aaro({
-    baseUrl: 'https://erp.aaro.com.tr',
-    accessToken: 'OMBwgauc1HwRBxBA...',
-});
+(async () => {
+    const baseUrl = 'https://erp.aaro.com.tr';
+
+    const token = await Token(baseUrl, 'username', 'password').then(
+        (rp) => rp.data.access_token
+    );
+
+    const aaro = new Aaro({
+        baseUrl,
+        accessToken: token,
+    });
+
+    aaro.get('Stok', {
+        SayfaSatirSayisi: 100,
+        StokID: '1567,1562',
+    }).then((response) => console.log(response.data.Model.length));
+})();
 ```
 
 ### Options
@@ -92,18 +105,26 @@ const aaro = new Aaro({
 ## Example of use
 
 ```js
-const Aaro = require('aaro');
+const { Aaro, Token } = require('aaro');
 
-const aaro = new Aaro({
-    baseUrl: 'https://erp2.aaro.com.tr',
-    accessToken: 'OMBwgauc1HwRBx********',
-});
+(async () => {
+    const baseUrl = 'https://erp.aaro.com.tr';
 
-aaro.get('Stok', {
-    Sayfa: 1,
-    SayfaSatirSayisi: 10,
-    StokID: '1567,1562,8591,1531,7879,7875,6382,6384,6383,7879,6385',
-}).then((response) => console.log(response.data.Model));
+    const token = await Token(baseUrl, 'username', 'password').then(
+        (rp) => rp.data.access_token
+    );
+
+    const aaro = new Aaro({
+        baseUrl,
+        accessToken: token,
+    });
+
+    aaro.get('Stok', {
+        Sayfa: 1,
+        SayfaSatirSayisi: 10,
+        StokID: '1567,1562,8591,1531,7879,7875,6382,6384,6383,7879,6385',
+    }).then((response) => console.log(response.data.Model));
+})();
 ```
 
 ## Changelog
