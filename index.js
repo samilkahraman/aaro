@@ -62,7 +62,10 @@ Aaro.prototype.post = function post(endpoint, data, params = {}) {
  * @return {Object}
  */
 Aaro.prototype.put = function put(endpoint, data, params = {}) {
-    return this.request('post', endpoint, data, { ...params, KayitTipi: 2 });
+    return this.request('post', endpoint + '/post', data, {
+        ...params,
+        KayitTipi: 2,
+    });
 };
 
 /**
@@ -75,7 +78,10 @@ Aaro.prototype.put = function put(endpoint, data, params = {}) {
  * @return {Object}
  */
 Aaro.prototype.delete = function remove(endpoint, params = {}) {
-    return this.request('post', endpoint, null, { ...params, KayitTipi: -1 });
+    return this.request('post', endpoint + '/post', null, {
+        ...params,
+        KayitTipi: -1,
+    });
 };
 
 /**
