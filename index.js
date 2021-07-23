@@ -50,7 +50,10 @@ Aaro.prototype.get = function get(endpoint, params = {}) {
  * @return {Object}
  */
 Aaro.prototype.post = function post(endpoint, data, params = {}) {
-    return this.request('post', endpoint, data, params);
+    return this.request('post', endpoint + '/post', data, {
+        ...params,
+        KayitTipi: 1,
+    });
 };
 
 /**
