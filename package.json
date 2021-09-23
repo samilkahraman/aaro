@@ -1,6 +1,6 @@
 {
   "name": "aaro",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Aaro api client",
   "license": "MIT",
   "main": "index.js",
