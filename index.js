@@ -19,13 +19,13 @@ const Token = require('./token');
  * @public
  */
 function Aaro(options) {
-    if (!(this instanceof Aaro)) return new Aaro(options);
-    if (!options || !options.baseUrl || !options.accessToken) {
-        throw new Error('Missing or invalid options');
-    }
-    this._setDefaultsOptions(options);
+	if (!(this instanceof Aaro)) return new Aaro(options);
+	if (!options || !options.baseUrl || !options.accessToken) {
+		throw new Error('Missing or invalid options');
+	}
+	this._setDefaultsOptions(options);
 
-    this.baseUrl = options.baseUrl;
+	this.baseUrl = options.baseUrl;
 }
 
 /**
@@ -37,7 +37,7 @@ function Aaro(options) {
  * @return {Object}
  */
 Aaro.prototype.get = function get(endpoint, params = {}) {
-    return this.request('get', endpoint, null, params);
+	return this.request('get', endpoint, null, params);
 };
 
 /**
@@ -50,10 +50,10 @@ Aaro.prototype.get = function get(endpoint, params = {}) {
  * @return {Object}
  */
 Aaro.prototype.post = function post(endpoint, data, params = {}) {
-    return this.request('post', endpoint + '/post', data, {
-        ...params,
-        KayitTipi: 1,
-    });
+	return this.request('post', endpoint + '/post', data, {
+		...params,
+		KayitTipi: 1,
+	});
 };
 
 /**
@@ -66,10 +66,10 @@ Aaro.prototype.post = function post(endpoint, data, params = {}) {
  * @return {Object}
  */
 Aaro.prototype.put = function put(endpoint, data, params = {}) {
-    return this.request('post', endpoint + '/post', data, {
-        ...params,
-        KayitTipi: 2,
-    });
+	return this.request('post', endpoint + '/post', data, {
+		...params,
+		KayitTipi: 2,
+	});
 };
 
 /**
@@ -81,11 +81,11 @@ Aaro.prototype.put = function put(endpoint, data, params = {}) {
  *
  * @return {Object}
  */
-Aaro.prototype.delete = function remove(endpoint, params = {}) {
-    return this.request('post', endpoint + '/post', null, {
-        ...params,
-        KayitTipi: -1,
-    });
+Aaro.prototype.delete = function remove(endpoint, data, params = {}) {
+	return this.request('post', endpoint + '/post', data, {
+		...params,
+		KayitTipi: -1,
+	});
 };
 
 /**
@@ -94,96 +94,96 @@ Aaro.prototype.delete = function remove(endpoint, params = {}) {
  * @param {Object} opt
  */
 Aaro.prototype._setDefaultsOptions = function _setDefaultsOptions(opt) {
-    this.baseUrl = opt.baseUrl;
-    this.isHttps = /^https/i.test(this.baseUrl);
-    this.encoding = opt.encoding || 'utf8';
-    this.grant_type = opt.grant_type || 'password';
-    this.accessToken = opt.accessToken || '';
-    this.username = opt.username || '';
-    this.password = opt.password || '';
-    this.queryStringAuth = opt.queryStringAuth || false;
-    this.timeout = opt.timeout || 60000;
-    this.axiosConfig = opt.axiosConfig || {};
+	this.baseUrl = opt.baseUrl;
+	this.isHttps = /^https/i.test(this.baseUrl);
+	this.encoding = opt.encoding || 'utf8';
+	this.grant_type = opt.grant_type || 'password';
+	this.accessToken = opt.accessToken || '';
+	this.username = opt.username || '';
+	this.password = opt.password || '';
+	this.queryStringAuth = opt.queryStringAuth || false;
+	this.timeout = opt.timeout || 60000;
+	this.axiosConfig = opt.axiosConfig || {};
 };
 
 Aaro.prototype._getUrl = function _getUrl(endpoint, params) {
-    let url =
-        this.baseUrl.slice(-1) === '/' ? this.baseUrl : this.baseUrl + '/';
-    url = url + 'api/' + endpoint;
+	let url =
+		this.baseUrl.slice(-1) === '/' ? this.baseUrl : this.baseUrl + '/';
+	url = url + 'api/' + endpoint;
 
-    return this._normalizeQueryString(url, params);
+	return this._normalizeQueryString(url, params);
 };
 
 Aaro.prototype._normalizeQueryString = function _normalizeQueryString(
-    url,
-    params
+	url,
+	params
 ) {
-    // Exit if don't find query string.
-    if (url.indexOf('?') === -1 && Object.keys(params).length === 0) {
-        return url;
-    }
+	// Exit if don't find query string.
+	if (url.indexOf('?') === -1 && Object.keys(params).length === 0) {
+		return url;
+	}
 
-    const query = new Url(url, null, true).query;
-    const values = [];
+	const query = new Url(url, null, true).query;
+	const values = [];
 
-    let queryString = '';
+	let queryString = '';
 
-    // Include params object into URL.searchParams.
-    this._parseParamsObject(params, query);
+	// Include params object into URL.searchParams.
+	this._parseParamsObject(params, query);
 
-    for (const key in query) {
-        values.push(key);
-    }
-    values.sort();
+	for (const key in query) {
+		values.push(key);
+	}
+	values.sort();
 
-    for (const i in values) {
-        if (queryString.length) {
-            queryString += '&';
-        }
+	for (const i in values) {
+		if (queryString.length) {
+			queryString += '&';
+		}
 
-        queryString += encodeURIComponent(values[i])
-            .replace(/%5B/g, '[')
-            .replace(/%5D/g, ']');
-        queryString += '=';
-        queryString += encodeURIComponent(query[values[i]]);
-    }
+		queryString += encodeURIComponent(values[i])
+			.replace(/%5B/g, '[')
+			.replace(/%5D/g, ']');
+		queryString += '=';
+		queryString += encodeURIComponent(query[values[i]]);
+	}
 
-    return url.split('?')[0] + '?' + queryString;
+	return url.split('?')[0] + '?' + queryString;
 };
 
 Aaro.prototype.request = function request(method, endpoint, data, params = {}) {
-    const url = this._getUrl(endpoint, params);
-    const headers = {
-        Authorization: `Bearer ${this.accessToken}`,
-        Accept: 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded',
-    };
-    // only set "User-Agent" in node environment
-    // the checking method is identical to upstream axios
-    if (
-        typeof process !== 'undefined' &&
-        Object.prototype.toString.call(process) === '[object process]'
-    ) {
-        headers['User-Agent'] = 'Aaro REST API - JS Client';
-    }
+	const url = this._getUrl(endpoint, params);
+	const headers = {
+		Authorization: `Bearer ${this.accessToken}`,
+		Accept: 'application/json',
+		'Content-Type': 'application/x-www-form-urlencoded',
+	};
+	// only set "User-Agent" in node environment
+	// the checking method is identical to upstream axios
+	if (
+		typeof process !== 'undefined' &&
+		Object.prototype.toString.call(process) === '[object process]'
+	) {
+		headers['User-Agent'] = 'Aaro REST API - JS Client';
+	}
 
-    let options = {
-        url: url,
-        method: method,
-        responseEncoding: this.encoding,
-        timeout: this.timeout,
-        responseType: 'json',
-        headers,
-    };
+	let options = {
+		url: url,
+		method: method,
+		responseEncoding: this.encoding,
+		timeout: this.timeout,
+		responseType: 'json',
+		headers,
+	};
 
-    if (data) {
-        options.headers['Content-Type'] = 'application/json;charset=utf-8';
-        options.data = JSON.stringify(data);
-    }
+	if (data) {
+		options.headers['Content-Type'] = 'application/json;charset=utf-8';
+		options.data = JSON.stringify(data);
+	}
 
-    // Allow set and override Axios options.
-    options = { ...options, ...this.axiosConfig };
-    return axios(options);
+	// Allow set and override Axios options.
+	options = { ...options, ...this.axiosConfig };
+	return axios(options);
 };
 
 /**
@@ -193,20 +193,20 @@ Aaro.prototype.request = function request(method, endpoint, data, params = {}) {
  * @param {Object} query
  */
 Aaro.prototype._parseParamsObject = function _parseParamsObject(params, query) {
-    for (const key in params) {
-        const value = params[key];
+	for (const key in params) {
+		const value = params[key];
 
-        if (typeof value === 'object') {
-            for (const prop in value) {
-                const itemKey = key.toString() + '[' + prop.toString() + ']';
-                query[itemKey] = value[prop];
-            }
-        } else {
-            query[key] = value;
-        }
-    }
+		if (typeof value === 'object') {
+			for (const prop in value) {
+				const itemKey = key.toString() + '[' + prop.toString() + ']';
+				query[itemKey] = value[prop];
+			}
+		} else {
+			query[key] = value;
+		}
+	}
 
-    return query;
+	return query;
 };
 
 module.exports = { Aaro, Token };
